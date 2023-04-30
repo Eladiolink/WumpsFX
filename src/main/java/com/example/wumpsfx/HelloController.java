@@ -1,5 +1,10 @@
 package com.example.wumpsfx;
 
+import com.example.wumpsfx.game.character.Award;
+import com.example.wumpsfx.game.character.BoardItem;
+import com.example.wumpsfx.game.character.Hero.Hero;
+import com.example.wumpsfx.game.character.Hole.Hole;
+import com.example.wumpsfx.game.character.Monster.Monster;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -20,25 +25,9 @@ import java.nio.file.Paths;
 public class HelloController {
     @FXML
     private GridPane wumps;
-    @FXML
-    private ImageView position00;
-    @FXML
-    protected void onHelloButtonClick() {
-
-        //welcomeText.setText("Welcome to JavaFX Application!");
-
-    }
 
     @FXML
-    public void Wumps(int value) throws URISyntaxException, FileNotFoundException {
-        URL resourceUrl = getClass().getClassLoader().getResource("link.png");
-        Path path = Paths.get(resourceUrl.toURI());
-        String caminho = path.toString();
-
-        System.out.println(caminho);
-        FileInputStream input = new FileInputStream(caminho);
-        Image hero = new Image(input);
-
+    public void Wumps(BoardItem board[][]) throws URISyntaxException, FileNotFoundException {
         ObservableList<Node> c = wumps.getChildren();
 
         ImageView[][] matriz = new ImageView[4][4];
@@ -56,27 +45,38 @@ public class HelloController {
             }
         }
 
-            if(value==1){
-            matriz[3][0].setImage(hero);
-            matriz[3][0].setFitHeight(125);
-            matriz[3][0].setFitWidth(125);
-        }else{
-                matriz[1][2].setImage(hero);
-                matriz[1][2].setFitHeight(125);
-                matriz[1][2].setFitWidth(125);
-            }
+        for(int i=0;i<4;i++){
+            for(int j=0;j<4;j++){
+               if(board[i][j] instanceof Hero){
+                   matriz[i][j].setImage(image("link"));
+               }
 
+                if(board[i][j] instanceof Award){
+                    matriz[i][j].setImage(image("award"));
+                }
+
+                if(board[i][j] instanceof Hole){
+                    matriz[i][j].setImage(image("hole"));
+                }
+
+                if(board[i][j] instanceof Monster){
+                    matriz[i][j].setImage(image("treeMonster"));
+                }
+
+                matriz[i][j].setFitHeight(130);
+                matriz[i][j].setFitWidth(130);
+            }
+        }
     }
 
-    @FXML
-    public void initialize() throws URISyntaxException, FileNotFoundException {
-//        URL resourceUrl = getClass().getClassLoader().getResource("link.png");
-//        Path path = Paths.get(resourceUrl.toURI());
-//        String caminho = path.toString();
-//
-//        System.out.println(caminho);
-//        FileInputStream input = new FileInputStream(caminho);
-//        Image img = new Image(input);
-//        position00.setImage(img);
+    private Image image(String name) throws URISyntaxException, FileNotFoundException {
+        URL resourceUrl = getClass().getClassLoader().getResource(name+".png");
+        Path path = Paths.get(resourceUrl.toURI());
+
+        String caminho = path.toString();
+
+        System.out.println(caminho);
+        FileInputStream input = new FileInputStream(caminho);
+        return new Image(input);
     }
 }

@@ -2,6 +2,8 @@ package com.example.wumpsfx.game.entitie;
 
 import com.example.wumpsfx.game.character.BoardItem;
 import com.example.wumpsfx.game.character.Hero.Hero;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderImage;
 
 import java.util.Random;
 
@@ -111,4 +113,16 @@ public class Move {
         return numeroAleatorio;
     }
 
+    public static Position randomPosition(BoardItem board[][]){
+        Random random = new Random();
+        Position position = new Position();
+        position.x = random.nextInt(4);
+        position.y = random.nextInt(4);
+
+        while(board[position.y][position.x] != null){
+            position.x = random.nextInt(4);
+            position.y = random.nextInt(4);
+        }
+        return  position;
+    }
 }

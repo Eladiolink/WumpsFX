@@ -1,5 +1,6 @@
 package com.example.wumpsfx.game;
 
+import com.example.wumpsfx.HelloController;
 import com.example.wumpsfx.game.character.Award;
 import com.example.wumpsfx.game.character.BoardItem;
 import com.example.wumpsfx.game.character.BreezeOrStink.BreezeAndStink;
@@ -11,7 +12,8 @@ import com.example.wumpsfx.game.character.Monster.Stink;
 import com.example.wumpsfx.game.entitie.Move;
 import com.example.wumpsfx.game.entitie.Position;
 
-import java.util.Random;
+import java.io.FileNotFoundException;
+import java.net.URISyntaxException;
 
 public class Board {
     private BoardItem[][] board = new BoardItem[4][4];
@@ -20,7 +22,9 @@ public class Board {
         System.out.println("Hello!");
 
         addMoster();
+
         addHole();
+
         addAward();
 
         board[3][0] = new Hero();
@@ -28,13 +32,15 @@ public class Board {
         printBoard();
     }
 
-    public void game(){
+    public BoardItem[][] game(HelloController controller) throws FileNotFoundException, URISyntaxException, InterruptedException {
         Hero hero = (Hero) board[3][0];
+        controller.Wumps(board);
 
+        Thread.sleep(1000);
         while(!hero.inBoss()){
 
             if(hero.lastItem instanceof Breeze || hero.lastItem instanceof Stink || hero.lastItem instanceof BreezeAndStink ){
-                if(Move.percenteToExplore() > 70){
+                if(Move.percenteToExplore() > 90){
                     Move.move(hero,Move.probableToMove(hero),board);
                 }else{
                     hero.goBack(hero,board);
@@ -44,9 +50,7 @@ public class Board {
             }
 
 
-
-            printBoard();
-
+            controller.Wumps(board);
             if(hero.inBoss()) {
                 System.out.println("Você Perdeu !!!");
                 break;
@@ -56,11 +60,11 @@ public class Board {
                 System.out.println("PARABÉNS!!!");
                 break;
             }
+            Thread.sleep(500);
          }
 
+            return board;
     }
-
-
 
     private void printBoard(){
         System.out.println();
@@ -95,21 +99,8 @@ public class Board {
         return " = ";
     }
 
-    private Position randomPosition(){
-        Random random = new Random();
-        Position position = new Position();
-        position.x = random.nextInt(4);
-        position.y = random.nextInt(4);
-
-        while(board[position.y][position.x] != null){
-            position.x = random.nextInt(4);
-            position.y = random.nextInt(4);
-        }
-        return  position;
-    }
-
     private void addMoster(){
-        Position p = randomPosition();
+        Position p = Move.randomPosition(board);
 
         board[p.y][p.x] = new Monster();
         // top
@@ -136,7 +127,7 @@ public class Board {
     }
 
     private void addHole(){
-        Position p = randomPosition();
+        Position p = Move.randomPosition(board);
 
         board[p.y][p.x] = new Hole();
 
@@ -164,7 +155,7 @@ public class Board {
     }
 
     private void addAward(){
-        Position p = randomPosition();
+        Position p = Move.randomPosition(board);
 
         board[p.y][p.x] = new Award();
     }

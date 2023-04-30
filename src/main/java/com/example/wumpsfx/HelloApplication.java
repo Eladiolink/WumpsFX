@@ -1,5 +1,7 @@
 package com.example.wumpsfx;
 
+import com.example.wumpsfx.game.Board;
+import com.example.wumpsfx.game.character.BoardItem;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -19,7 +21,7 @@ public class HelloApplication extends Application {
     public void start(Stage stage) throws IOException, URISyntaxException, InterruptedException {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("wumpsfx.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 500, 500);
-        stage.setTitle("Hello!");
+        stage.setTitle("WUMPS!");
         stage.initStyle(StageStyle.DECORATED);
         stage.setScene(scene);
 
@@ -28,9 +30,10 @@ public class HelloApplication extends Application {
         stage.show();
 
         Thread loop = new Thread(()->{
+            Board game = new Board();
+
             try {
-                in();
-                System.out.println("OK");
+                game.game(controller);
             } catch (FileNotFoundException e) {
                 throw new RuntimeException(e);
             } catch (URISyntaxException e) {
@@ -39,15 +42,9 @@ public class HelloApplication extends Application {
                 throw new RuntimeException(e);
             }
         });
-
         loop.start();
     }
 
-    private void in() throws FileNotFoundException, URISyntaxException, InterruptedException {
-        controller.Wumps(1);
-        Thread.sleep(2500);
-        controller.Wumps(0);
-    }
     public static void main(String[] args){
         launch();
     }
