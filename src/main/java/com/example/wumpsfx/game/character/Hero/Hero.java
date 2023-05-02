@@ -1,5 +1,6 @@
 package com.example.wumpsfx.game.character.Hero;
 
+import com.example.wumpsfx.game.Board;
 import com.example.wumpsfx.game.character.BoardItem;
 import com.example.wumpsfx.game.character.Hole.Hole;
 import com.example.wumpsfx.game.character.Monster.Monster;
@@ -17,9 +18,9 @@ public class Hero extends BoardItem {
     public  BoardItem lastItem = null;
     private int knowPossitionNumber;
     public Hero() {
-        knownWay.add(new Position(0,3));
+        knownWay.add(new Position(0, Board.houses-1));
         atualPossition.x = 0;
-        atualPossition.y = 3;
+        atualPossition.y = Board.houses-1;
     }
 
     public void goBack(Hero hero, BoardItem board[][]){
@@ -93,7 +94,7 @@ public class Hero extends BoardItem {
     }
 
     public void down(BoardItem board[][]){
-        if(atualPossition.y == 3) return;
+        if(atualPossition.y == Board.houses-1) return;
         Hero hero = (Hero) board[atualPossition.y][atualPossition.x];
 
         board[atualPossition.y][atualPossition.x] = (lastItem == null) ? null : lastItem;
@@ -125,7 +126,7 @@ public class Hero extends BoardItem {
     }
 
     public void right(BoardItem board[][]){
-        if(atualPossition.x == 3) return;
+        if(atualPossition.x == Board.houses-1) return;
         Hero hero = (Hero) board[atualPossition.y][atualPossition.x];
 
         board[atualPossition.y][atualPossition.x] = (lastItem == null) ? null : lastItem;

@@ -1,5 +1,6 @@
 package com.example.wumpsfx;
 
+import com.example.wumpsfx.game.Board;
 import com.example.wumpsfx.game.character.Award;
 import com.example.wumpsfx.game.character.BoardItem;
 import com.example.wumpsfx.game.character.Hero.Hero;
@@ -39,14 +40,15 @@ public class HelloController {
             }
         }
 
-        for(int i=0;i<4;i++){
-            for(int j=0;j<4;j++){
-                matriz[i][j].setImage(null);
+        for(int i = 0; i< Board.houses; i++){
+            for(int j=0;j<Board.houses;j++){
+                if(!(board[i][j] instanceof Monster) && !(board[i][j] instanceof Hole) && !(board[i][j] instanceof Award))
+                    matriz[i][j].setImage(null);
             }
         }
 
-        for(int i=0;i<4;i++){
-            for(int j=0;j<4;j++){
+        for(int i=0;i<Board.houses;i++){
+            for(int j=0;j<Board.houses;j++){
                if(board[i][j] instanceof Hero){
                    matriz[i][j].setImage(image("link"));
                }
@@ -75,7 +77,6 @@ public class HelloController {
 
         String caminho = path.toString();
 
-        System.out.println(caminho);
         FileInputStream input = new FileInputStream(caminho);
         return new Image(input);
     }

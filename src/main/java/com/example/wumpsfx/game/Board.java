@@ -14,33 +14,32 @@ import com.example.wumpsfx.game.entitie.Position;
 
 import java.io.FileNotFoundException;
 import java.net.URISyntaxException;
+import java.util.Random;
 
 public class Board {
-    private BoardItem[][] board = new BoardItem[4][4];
 
+    public static int houses = 4;
+    private BoardItem[][] board = new BoardItem[houses][houses];
     public Board() {
         System.out.println("Hello!");
 
         addMoster();
-
         addHole();
-
         addAward();
-
-        board[3][0] = new Hero();
+        board[houses-1][0] = new Hero();
 
         printBoard();
     }
 
-    public BoardItem[][] game(HelloController controller) throws FileNotFoundException, URISyntaxException, InterruptedException {
-        Hero hero = (Hero) board[3][0];
-        controller.Wumps(board);
+    public void game(HelloController controller) throws FileNotFoundException, URISyntaxException, InterruptedException {
+        Hero hero = (Hero) board[houses-1][0];
 
-        Thread.sleep(1000);
+        controller.Wumps(board);
+        Thread.sleep(500);
         while(!hero.inBoss()){
 
             if(hero.lastItem instanceof Breeze || hero.lastItem instanceof Stink || hero.lastItem instanceof BreezeAndStink ){
-                if(Move.percenteToExplore() > 90){
+                if(Move.percenteToExplore() > 70){
                     Move.move(hero,Move.probableToMove(hero),board);
                 }else{
                     hero.goBack(hero,board);
@@ -49,28 +48,28 @@ public class Board {
                 Move.move(hero,Move.probableToMove(hero),board);
             }
 
-
+            printBoard();
             controller.Wumps(board);
+
             if(hero.inBoss()) {
                 System.out.println("Você Perdeu !!!");
                 break;
             }
 
-            if(hero.lastItem instanceof Award) {
+            if(hero.lastItem instanceof  Award) {
                 System.out.println("PARABÉNS!!!");
                 break;
             }
             Thread.sleep(500);
-         }
+        }
 
-            return board;
     }
 
     private void printBoard(){
         System.out.println();
 
-        for(int i=0;i<4;i++){
-            for(int j=0;j<4;j++){
+        for(int i=0;i<houses;i++){
+            for(int j=0;j<houses;j++){
                 if(board[i][j]==null){
                     System.out.print(" O ");
                 }else{
@@ -99,8 +98,21 @@ public class Board {
         return " = ";
     }
 
+    private Position randomPosition(){
+        Random random = new Random();
+        Position position = new Position();
+        position.x = random.nextInt(houses);
+        position.y = random.nextInt(houses);
+
+        while(board[position.y][position.x] != null){
+            position.x = random.nextInt(houses);
+            position.y = random.nextInt(houses);
+        }
+        return  position;
+    }
+
     private void addMoster(){
-        Position p = Move.randomPosition(board);
+        Position p = randomPosition();
 
         board[p.y][p.x] = new Monster();
         // top
@@ -109,7 +121,7 @@ public class Board {
             else board[p.y-1][p.x] = new Stink();
         }
         //down
-        if(!(p.y+1 > 3)){
+        if(!(p.y+1 > houses-1)){
             if(instanceBreeOrStink(board[p.y+1][p.x])) board[p.y+1][p.x] = new BreezeAndStink();
             else board[p.y+1][p.x] = new Stink();
         }
@@ -120,14 +132,14 @@ public class Board {
             else board[p.y][p.x-1] = new Stink();
         }
         //right
-        if(!(p.x+1 > 3)){
+        if(!(p.x+1 > houses-1)){
             if(instanceBreeOrStink(board[p.y][p.x+1])) board[p.y][p.x+1] = new BreezeAndStink();
             else board[p.y][p.x+1] = new Stink();
         }
     }
 
     private void addHole(){
-        Position p = Move.randomPosition(board);
+        Position p = randomPosition();
 
         board[p.y][p.x] = new Hole();
 
@@ -137,7 +149,7 @@ public class Board {
             else board[p.y-1][p.x] = new Breeze();
         }
         //down
-        if(!(p.y+1 > 3)){
+        if(!(p.y+1 > houses-1)){
             if(instanceBreeOrStink(board[p.y+1][p.x])) board[p.y+1][p.x] = new BreezeAndStink();
             else board[p.y+1][p.x] = new Breeze();
         }
@@ -148,14 +160,14 @@ public class Board {
             else board[p.y][p.x-1] = new Breeze();
         }
         //right
-        if(!(p.x+1 > 3)){
+        if(!(p.x+1 > houses-1)){
             if(instanceBreeOrStink(board[p.y][p.x+1])) board[p.y][p.x+1] = new BreezeAndStink();
             else board[p.y][p.x+1] = new Breeze();
         }
     }
 
     private void addAward(){
-        Position p = Move.randomPosition(board);
+        Position p = randomPosition();
 
         board[p.y][p.x] = new Award();
     }

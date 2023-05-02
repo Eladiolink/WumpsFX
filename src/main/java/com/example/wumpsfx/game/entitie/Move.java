@@ -1,5 +1,6 @@
 package com.example.wumpsfx.game.entitie;
 
+import com.example.wumpsfx.game.Board;
 import com.example.wumpsfx.game.character.BoardItem;
 import com.example.wumpsfx.game.character.Hero.Hero;
 import javafx.scene.layout.Border;
@@ -11,14 +12,14 @@ public class Move {
     public static String[] probableToMove(Hero hero){
         String[] directions;
 
-        if((hero.atualPossition.x == 0 && hero.atualPossition.y == 3)){
+        if((hero.atualPossition.x == 0 && hero.atualPossition.y == Board.houses-1)){
             directions = new String[2];
             directions[0] = Directions.UP;
             directions[1] = Directions.RIGHT;
             return directions;
         }
 
-        if(hero.atualPossition.x == 0 && (hero.atualPossition.y >=1 && hero.atualPossition.y <=2)){
+        if(hero.atualPossition.x == 0 && (hero.atualPossition.y >=1 && hero.atualPossition.y <=Board.houses-2)){
             directions = new String[3];
             directions[0] = Directions.UP;
             directions[1] = Directions.DOWN;
@@ -33,7 +34,7 @@ public class Move {
             return directions;
         }
 
-        if(hero.atualPossition.y == 0 && (hero.atualPossition.x >=1 && hero.atualPossition.x <=2)){
+        if(hero.atualPossition.y == 0 && (hero.atualPossition.x >=1 && hero.atualPossition.x <= Board.houses-2)){
             directions = new String[3];
             directions[0] = Directions.DOWN;
             directions[1] = Directions.RIGHT;
@@ -41,14 +42,14 @@ public class Move {
             return directions;
         }
 
-        if(hero.atualPossition.x == 3 && hero.atualPossition.y == 0){
+        if(hero.atualPossition.x == Board.houses-1 && hero.atualPossition.y == 0){
             directions = new String[2];
             directions[0] = Directions.DOWN;
             directions[1] = Directions.LEFT;
             return directions;
         }
 
-        if(hero.atualPossition.x == 3 && (hero.atualPossition.y >=1 && hero.atualPossition.y <=2)){
+        if(hero.atualPossition.x == Board.houses-1 && (hero.atualPossition.y >=1 && hero.atualPossition.y <= Board.houses-2)){
             directions = new String[3];
 
             directions[0] = Directions.UP;
@@ -57,14 +58,14 @@ public class Move {
             return directions;
         }
 
-        if(hero.atualPossition.x == 3 && hero.atualPossition.y == 3){
+        if(hero.atualPossition.x == Board.houses-1 && hero.atualPossition.y == Board.houses-1){
             directions = new String[2];
             directions[0] = Directions.UP;
             directions[1] = Directions.LEFT;
             return directions;
         }
 
-        if(hero.atualPossition.y == 3 && (hero.atualPossition.x >=1 && hero.atualPossition.x <=2)){
+        if(hero.atualPossition.y == Board.houses-1 && (hero.atualPossition.x >=1 && hero.atualPossition.x <=Board.houses-2)){
             directions = new String[3];
             directions[0] = Directions.UP;
             directions[1] = Directions.RIGHT;
@@ -113,16 +114,4 @@ public class Move {
         return numeroAleatorio;
     }
 
-    public static Position randomPosition(BoardItem board[][]){
-        Random random = new Random();
-        Position position = new Position();
-        position.x = random.nextInt(4);
-        position.y = random.nextInt(4);
-
-        while(board[position.y][position.x] != null){
-            position.x = random.nextInt(4);
-            position.y = random.nextInt(4);
-        }
-        return  position;
-    }
 }
