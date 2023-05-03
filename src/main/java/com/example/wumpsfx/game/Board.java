@@ -39,7 +39,7 @@ public class Board {
         while(!hero.inBoss()){
 
             if(hero.lastItem instanceof Breeze || hero.lastItem instanceof Stink || hero.lastItem instanceof BreezeAndStink ){
-                if(Move.percenteToExplore() > 70){
+                if(Move.percenteToExplore() > 90){
                     Move.move(hero,Move.probableToMove(hero),board);
                 }else{
                     hero.goBack(hero,board);

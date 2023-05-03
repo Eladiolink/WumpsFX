@@ -19,6 +19,8 @@ public class HelloApplication extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("wumpsfx.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 500, 500);
         stage.setTitle("WUMPS!");
+        stage.setMaxHeight(525);
+        stage.setMaxWidth(500);
         stage.initStyle(StageStyle.DECORATED);
         stage.setScene(scene);
 
